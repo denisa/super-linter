@@ -7,9 +7,10 @@ on:
 jobs:
   test:
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     permissions:
         contents: read
+        packages: write
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.images.target }}
       cancel-in-progress: true
@@ -18,7 +19,9 @@ jobs:
       matrix:
         images:
           - target: slim
+            prefix: slim-
           - target: standard
+            prefix: ""
     timeout-minutes: 60
     steps:
       - name: Checkout Code
@@ -27,7 +30,7 @@ jobs:
           fetch-depth: 0
 
       - name: Update action.yml
-        run: yq '.runs.image = "docker://ghcr.io/github/super-linter:${{ matrix.images.target }}"' -i action.yml
+        run: yq '.runs.image = "docker://ghcr.io/denisa/super-linter:${{ matrix.images.target }}"' -i action.yml
 
       - name: Retrieve Datetime
         run: echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "${GITHUB_ENV}"
@@ -36,7 +39,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
             BUILD_REVISION=${{ github.sha }}
@@ -45,7 +47,7 @@ jobs:
           push: false
           secrets: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          tags: ghcr.io/github/super-linter:${{ matrix.images.target }}
+          tags: ghcr.io/denisa/super-linter:${{ matrix.images.target }}
           target: "${{ matrix.images.target }}"
 
       - name: Test Local Action
@@ -77,7 +79,7 @@ jobs:
           -e ACTIONS_RUNNER_DEBUG=true \
           -e ERROR_ON_MISSING_EXEC_BIT=true \
           -v "${GITHUB_WORKSPACE}:/tmp/lint" \
-          "ghcr.io/github/super-linter:${tag}"
+          "ghcr.io/denisa/super-linter:${tag}"
         env:
           tag: ${{ matrix.images.target }}
 
@@ -89,6 +91,29 @@ jobs:
           -e ACTIONS_RUNNER_DEBUG=true \
           -e ERROR_ON_MISSING_EXEC_BIT=true \
           -v "${GITHUB_WORKSPACE}:/tmp/lint" \
-          "ghcr.io/github/super-linter:${tag}"
+          "ghcr.io/denisa/super-linter:${tag}"
         env:
           tag: ${{ matrix.images.target }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            BUILD_REVISION=${{ github.sha }}
+            BUILD_VERSION=${{ github.sha }}
+          load: false
+          push: true
+          secrets: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          tags: |
+            ghcr.io/denisa/super-linter:${{ matrix.images.prefix }}latest
+          target: "${{ matrix.images.target }}"

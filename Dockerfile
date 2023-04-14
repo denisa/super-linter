@@ -279,9 +279,9 @@ LABEL com.github.actions.name="GitHub Super-Linter" \
     org.opencontainers.image.revision=$BUILD_REVISION \
     org.opencontainers.image.version=$BUILD_VERSION \
     org.opencontainers.image.authors="GitHub DevOps <github_devops@github.com>" \
-    org.opencontainers.image.url="https://github.com/github/super-linter" \
-    org.opencontainers.image.source="https://github.com/github/super-linter" \
-    org.opencontainers.image.documentation="https://github.com/github/super-linter" \
+    org.opencontainers.image.url="https://github.com/denisa/super-linter" \
+    org.opencontainers.image.source="https://github.com/denisa/super-linter" \
+    org.opencontainers.image.documentation="https://github.com/denisa/super-linter" \
     org.opencontainers.image.vendor="GitHub" \
     org.opencontainers.image.description="Lint your code base with GitHub Actions"
 
@@ -387,6 +387,8 @@ ENTRYPOINT ["/action/lib/linter.sh"]
 # Grab small clean image to build standard ###############################
 ################################################################################
 FROM slim as standard
+# https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope
+ARG TARGETARCH
 
 ###############
 # Set up args #
