@@ -2,14 +2,14 @@
 
 The **GitHub Super-Linter** maintains `two` major images:
 
-- `github/super-linter:v4`
-- `github/super-linter:slim-v4`
+- `denisa/super-linter:v4`
+- `denisa/super-linter:slim-v4`
 
 In order to help users pull this image more naturally, the `action.yml` in this directory can help users pull the `slim image`.
 
 ## Slim Image
 
-The slim `github/super-linter:slim-v4` comes with all supported linters but removes the following:
+The slim `denisa/super-linter:slim-v4` comes with all supported linters but removes the following:
 
 - `rust` linters
 - `dotenv` linters
@@ -26,7 +26,7 @@ Example usage:
 # Run Linter against code base #
 ################################
 - name: Lint Code Base
-  uses: github/super-linter/slim@v4
+  uses: denisa/super-linter/slim@v4
   env:
     VALIDATE_ALL_CODEBASE: false
     DEFAULT_BRANCH: main
