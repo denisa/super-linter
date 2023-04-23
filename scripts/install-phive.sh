@@ -24,10 +24,6 @@ apk add --no-cache --force-overwrite \
   php81 php81-curl php81-ctype php81-dom php81-iconv php81-mbstring \
   php81-openssl php81-phar php81-simplexml php81-tokenizer php81-xmlwriter \
   tar zstd
-mkdir /tmp/libz
-curl --retry 5 --retry-delay 5 -sL https://www.archlinux.org/packages/core/${target}/zlib/download | tar -x --zstd -C /tmp/libz
-mv /tmp/libz/usr/lib/libz.so* /usr/glibc-compat/lib
-rm -rf /tmp/libz
 curl --retry 5 --retry-delay 5 -sLO https://phar.io/releases/phive.phar
 curl --retry 5 --retry-delay 5 -sLO https://phar.io/releases/phive.phar.asc
 gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys "0x9D8A98B29B2D5D79"
