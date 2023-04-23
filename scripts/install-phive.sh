@@ -17,6 +17,10 @@ arm64)
 esac
 
 apk add --no-cache --force-overwrite \
+  bash \
+  ca-certificates \
+  curl \
+  gnupg \
   php81 php81-curl php81-ctype php81-dom php81-iconv php81-mbstring \
   php81-openssl php81-phar php81-simplexml php81-tokenizer php81-xmlwriter \
   tar zstd
