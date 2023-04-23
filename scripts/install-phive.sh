@@ -21,6 +21,7 @@ apk add --no-cache --force-overwrite \
   ca-certificates \
   curl \
   gnupg \
+  musl-dev \
   php81 php81-curl php81-ctype php81-dom php81-iconv php81-mbstring \
   php81-openssl php81-phar php81-simplexml php81-tokenizer php81-xmlwriter \
   tar zstd
