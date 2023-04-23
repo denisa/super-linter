@@ -58,7 +58,7 @@ RUN apk add --no-cache \
     curl \
     file \
     gcc \
-    gcompat ``
+    gcompat \
     g++ \
     git git-lfs \
     go \
