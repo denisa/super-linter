@@ -6,4 +6,4 @@ curl -sLO https://raw.githubusercontent.com/clj-kondo/clj-kondo/master/script/in
 
 chmod +x install-clj-kondo
 
-./install-clj-kondo --dir  /usr/bin/ --download-dir /usr/bin/ --version "${CLJ_KONDO_VERSION}"
+./install-clj-kondo --dir /usr/bin/ --download-dir /usr/bin/ --version "${CLJ_KONDO_VERSION}"
